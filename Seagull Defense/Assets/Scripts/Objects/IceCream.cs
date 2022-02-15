@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class IceCream : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        
+        Debug.Log($"Collision detected with {collider.gameObject.name}");
+        Seagull sg = collider.gameObject.GetComponent<Seagull>();
+        if (sg != null)
+        {
+            sg.SnatchBooty(transform);
+        }
     }
 }

@@ -14,17 +14,23 @@ public class Data : GenericSingleton<Data>
 
     private Grid grid;
     private MapController map;
+    private List<GameObject> iceCreams;
+    private List<Vector3> icPos;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        iceCreams = new List<GameObject>(GameObject.FindGameObjectsWithTag("Ice Cream"));
+        icPos = new List<Vector3>(new Vector3[3]);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        for (int i = 0; i < iceCreams.Count; i++)
+        {
+            icPos[i] = iceCreams[i].transform.position;
+        }
     }
 
 
@@ -51,5 +57,10 @@ public class Data : GenericSingleton<Data>
     public int FOV
     {
         get { return fov; }
+    }
+
+    public List<Vector3> ICPos
+    {
+        get { return icPos; }
     }
 }

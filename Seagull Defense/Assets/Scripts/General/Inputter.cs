@@ -46,7 +46,7 @@ public class Inputter : GenericSingleton<Inputter>
         if (Input.GetMouseButton(1))
         {
             Vector3 mouseDelta = prevMouseWorldPoint - cam.ScreenToWorldPoint(Input.mousePosition);
-            cam.transform.Translate(new Vector3(mouseDelta.x, mouseDelta.z, 0));
+            cam.transform.Translate(new Vector3(mouseDelta.x, mouseDelta.y, 0f));
             prevMouseWorldPoint = cam.ScreenToWorldPoint(Input.mousePosition);
         }
     }

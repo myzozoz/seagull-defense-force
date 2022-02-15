@@ -12,6 +12,8 @@ public class MapController : MonoBehaviour
     private Tile grassTile;
     [SerializeField]
     private Tile fogTile;
+    [SerializeField]
+    private Tile spawnTile;
 
     private Tilemap tilemap;
 
@@ -37,9 +39,6 @@ public class MapController : MonoBehaviour
             //Convert nearby fog tiles to grass tiles.
             UpdateVision(c);
         }
-
-
-
     }
 
     public void SelectCell(Vector3Int c)
@@ -70,5 +69,26 @@ public class MapController : MonoBehaviour
                 tilemap.SetTile(a, grassTile);
             }
         }
+    }
+
+    public List<Vector3> GetSpawnPositions()
+    {
+        BoundsInt b = tilemap.cellBounds;
+        List<Vector3> spawnPos = new List<Vector3>();
+        Grid g = Data.Instance.GridComponent;
+
+        for (int x = b.xMin; x <= b.xMax; x++)
+        {
+            for (int y = b.yMin; y <= b.yMax; y++)
+            {
+                Vector3Int temp = new Vector3Int(x, y, 0);
+                if (tilemap.HasTile(temp) && tilemap.GetTile(temp).name == spawnTile.name)
+                {
+                    spawnPos.Add(g.CellToWorld(temp));
+                }
+            }
+        }
+
+        return spawnPos;
     }
 }
