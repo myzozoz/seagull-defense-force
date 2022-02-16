@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class Manager : GenericSingleton<Manager>
 {
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Data.Instance.ICCount <= 0)
+        {
+            Debug.Log("Game lost shithead");
+        }
     }
-
-
 }

@@ -14,25 +14,26 @@ public class Data : GenericSingleton<Data>
 
     private Grid grid;
     private MapController map;
-    private List<GameObject> iceCreams;
-    private List<Vector3> icPos;
+    private HashSet<GameObject> iceCreams;
+    private HashSet<GameObject> gullSpawns;
 
+    private bool requireICRefresh = false;
     // Start is called before the first frame update
     void Start()
     {
-        iceCreams = new List<GameObject>(GameObject.FindGameObjectsWithTag("Ice Cream"));
-        icPos = new List<Vector3>(new Vector3[3]);
+        iceCreams = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Ice Cream"));
+        gullSpawns = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Gull Spawn"));
     }
 
-    // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        for (int i = 0; i < iceCreams.Count; i++)
+        if (requireICRefresh)
         {
-            icPos[i] = iceCreams[i].transform.position;
+            iceCreams = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Ice Cream"));
+            requireICRefresh = false;
+            Debug.Log("Ice creams updated");
         }
     }
-
 
     public GameObject GridObject
     {
@@ -59,8 +60,23 @@ public class Data : GenericSingleton<Data>
         get { return fov; }
     }
 
-    public List<Vector3> ICPos
+    public HashSet<GameObject> IceCreams
     {
-        get { return icPos; }
+        get { return iceCreams; }
+    }
+
+    public HashSet<GameObject> GullSpawns
+    {
+        get { return gullSpawns; }
+    }
+
+    public int ICCount
+    {
+        get { return iceCreams.Count; }
+    }
+
+    public void RefreshIceCreams()
+    {
+        requireICRefresh = true;
     }
 }

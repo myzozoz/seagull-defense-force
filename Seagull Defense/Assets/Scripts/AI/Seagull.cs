@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Seagull : MonoBehaviour
@@ -9,40 +10,35 @@ public class Seagull : MonoBehaviour
     private float moveSpeed = 1f;
 
     private bool hasIce = false;
-    private Vector3 target;
+    private Transform target;
     private Rigidbody2D rb;
+    private IceCream iceCream = null;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        List<GameObject> ics = GameObject.FindGameObjectsWithTag("Ice Cream").ToList();
+        foreach (GameObject go in ics)
+        {
+            IceCream ic = go.GetComponent<IceCream>();
+            ic.RegisterIceCreamListener(UpdateTarget);
+        }
     }
 
     void FixedUpdate()
     {
-        if (target == new Vector3(0,0,0))
+        if (target == null || target.position == new Vector3(0,0,0))
         {
             Debug.Log("No target");
             UpdateTarget();
         }
-
-        if (hasIce && Mathf.Abs(transform.position.x - target.x) < .01 && Mathf.Abs(transform.position.y - target.y) < .01)
-        {
-            Debug.Log("Ice stolen get mad");
-            Destroy(this.gameObject);
-        }
         else
         {
-            Debug.Log($"Distance remaining to target: {target - transform.position}");
+            //Debug.Log($"Distance remaining to target: {target.position - transform.position}");
         }
 
-        Vector3 move = target - transform.position;
+        Vector3 move = target.position - transform.position;
         move.z = 0;
         rb.MovePosition(transform.position + (move.normalized * moveSpeed * Time.deltaTime));
         //rb.MoveRotation(rb.rotation + Vector3.Angle(transform.right, move));
@@ -61,39 +57,51 @@ public class Seagull : MonoBehaviour
     {
         if (!hasIce)
         {
-            target = FindClosest(Data.Instance.ICPos);
+            target = FindClosest(Data.Instance.IceCreams.ToList());
         }
         else
         {
-            target = FindClosest(Data.Instance.Map.GetSpawnPositions());
+            target = FindClosest(Data.Instance.GullSpawns.ToList());
         }
         Debug.Log($"Target updated, now headed to {target}");
-        
     }
 
-    public void SnatchBooty(Transform tf)
+    public void SnatchBooty(IceCream ic)
     {
-        Debug.Log("Rooty tooty we got the booty!");
-        hasIce = true;
-        tf.SetParent(transform);
-        tf.localPosition = new Vector3(0f, -0.3f, 0f);
-        tf.localEulerAngles = new Vector3(0f, 0f, 115f);
-        UpdateTarget();
+        if (!hasIce)
+        {
+            Debug.Log("Rooty tooty we got the booty!");
+            hasIce = true;
+            ic.transform.SetParent(transform);
+            ic.transform.localPosition = new Vector3(0f, -0.3f, 0f);
+            ic.transform.localEulerAngles = new Vector3(0f, 0f, 115f);
+            UpdateTarget();
+            iceCream = ic;
+        }
     }
 
-    private Vector3 FindClosest(List<Vector3> targets)
+    private Transform FindClosest(List<GameObject> targets)
     {
         float min_dist = 1000000f;
-        Vector3 min_t = new Vector3();
-        foreach (Vector3 t in targets)
+        Transform min_t = transform;
+        foreach (GameObject go in targets)
         {
-            float dist = Vector3.Distance(transform.position, t);
+            float dist = Vector3.Distance(transform.position, go.transform.position);
             if (dist < min_dist)
             {
                 min_dist = dist;
-                min_t = t;
+                min_t = go.transform;
             }
         }
         return min_t;
+    }
+
+    public void OnSpawnEnter()
+    {
+        if (hasIce)
+        {
+            Debug.Log("Ice stolen get mad");
+            Destroy(this.gameObject);
+        }
     }
 }

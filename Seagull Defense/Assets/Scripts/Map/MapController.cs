@@ -23,12 +23,6 @@ public class MapController : MonoBehaviour
         tilemap = GetComponent<Tilemap>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void ConstructPath(Vector3Int c)
     {
         //If tile is "path buildable" and there is an adjacent pathtile
@@ -71,6 +65,7 @@ public class MapController : MonoBehaviour
         }
     }
 
+    /*
     public List<Vector3> GetSpawnPositions()
     {
         BoundsInt b = tilemap.cellBounds;
@@ -91,4 +86,5 @@ public class MapController : MonoBehaviour
 
         return spawnPos;
     }
+    */
 }

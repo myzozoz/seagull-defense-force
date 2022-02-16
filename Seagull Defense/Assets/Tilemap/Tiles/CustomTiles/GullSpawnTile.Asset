@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GullSpawn
+  m_Script: {fileID: 11500000, guid: e74b2a9adfec68b4da3457c7a015a4b5, type: 3}
+  m_Name: GullSpawnTile
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: eeeaf873725f77c428a1fc8e163c77b4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -31,6 +31,6 @@ MonoBehaviour:
     e31: 0
     e32: 0
     e33: 1
-  m_InstancedGameObject: {fileID: 0}
+  m_InstancedGameObject: {fileID: 3393233380444805671, guid: e5e74f0dd3167e649872c07ebf6ac805, type: 3}
   m_Flags: 1
   m_ColliderType: 1
