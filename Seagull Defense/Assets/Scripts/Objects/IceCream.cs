@@ -37,4 +37,21 @@ public class IceCream : MonoBehaviour
     {
         IceCreamDestroyedEvent.AddListener(a);
     }
+
+    public void Drop()
+    {
+        transform.SetParent(null);
+        free = true;
+        Vector2 pos = new Vector2(transform.position.x, transform.position.y);
+        RaycastHit2D[] hits = Physics2D.CircleCastAll(pos, .5f, new Vector2(), 0f, LayerMask.GetMask("Seagull"), -1f, 1f);
+        if (hits.Length > 0)
+        {
+            Seagull sg = hits[0].transform.GetComponent<Seagull>();
+            if (sg != null)
+            {
+                sg.SnatchBooty(this);
+                free = false;
+            }
+        }
+    }
 }

@@ -167,6 +167,15 @@ public abstract class Seagull : MonoBehaviour
 
     public void Die()
     {
+        Debug.Log($"Child count at the time of death: {transform.childCount}");
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            Transform child = transform.GetChild(i);
+            if (child.tag == "Ice Cream")
+            {
+                child.GetComponent<IceCream>().Drop();
+            }
+        }
         Destroy(this.gameObject);
     }
 }
