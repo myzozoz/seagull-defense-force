@@ -36,14 +36,6 @@ public class TurretTower : Tower
         shotTime = Time.time;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            Shoot();
-        }
-    }
-
     void FixedUpdate()
     {
 

@@ -9,6 +9,16 @@ public abstract class Seagull : MonoBehaviour
     private float moveSpeed = 1f;
     [SerializeField]
     private float maxHealth;
+    [SerializeField]
+    private float turnAmplitude;
+    [SerializeField]
+    [Tooltip("Maximum multiplier, 1 means that values are between 0 and 2 * Turn Amplitude")]
+    private float turnAmplitudeSpread;
+    [SerializeField]
+    private float turnFrequency;
+    [SerializeField]
+    [Tooltip("Maximum multiplier, 1 means that values are between 0 and 2 * Turn Frequency")]
+    private float turnFrequencySpread;
 
     protected bool hasIce = false;
     private Transform target;
@@ -16,6 +26,7 @@ public abstract class Seagull : MonoBehaviour
     private IceCream iceCream = null;
     private float health;
     private bool updateTargetFlag = false;
+    private float turnOffset;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +39,11 @@ public abstract class Seagull : MonoBehaviour
             IceCream ic = go.GetComponent<IceCream>();
             ic.RegisterIceCreamListener(RequireTargetUpdate);
         }
+
+        turnAmplitude += Random.Range(-turnAmplitudeSpread, turnAmplitudeSpread) * turnAmplitude;
+        turnFrequency += Random.Range(-turnFrequencySpread, turnFrequencySpread) * turnFrequency;
+        turnOffset = Random.Range(0, 2 * Mathf.PI / turnFrequency);
+        Debug.Log($"Offset values| Amplitude: {turnAmplitude} | Frequency {turnFrequency} | turnOffset");
     }
 
     void FixedUpdate()
@@ -41,17 +57,31 @@ public abstract class Seagull : MonoBehaviour
             //Debug.Log($"Distance remaining to target: {target.position - transform.position}");
         }
 
+        Move();
+    }
+
+    private void Move()
+    {
         Vector3 move = target.position - transform.position;
         move.z = 0;
-        rb.MovePosition(transform.position + (move.normalized * moveSpeed * Time.deltaTime));
+        move = move.normalized;
 
+        float angle = turnAmplitude * Mathf.Sin(turnOffset + Time.time * Mathf.PI * turnFrequency);
 
+        move = new Vector3(Mathf.Cos(angle) * move.x - Mathf.Sin(angle) * move.y,
+            Mathf.Sin(angle) * move.x + Mathf.Cos(angle) * move.y,
+            0);
+
+        rb.MovePosition(transform.position + (move * moveSpeed * Time.deltaTime));
+
+        //The part about turning
         Vector3 lookDir = -transform.up;
         float rotAngle = Vector3.Angle(lookDir, move);
         float rotDir = Vector3.Dot(transform.right, move); // pos is on the left side
         rotAngle *= rotDir > 0 ? 1 : -1;
         //Debug.Log($"fwd: {lookDir} | target: {target} | angle: {rotAngle} | rot dir: {rotDir}");
         //positive value turns counter-clockwise
+        
         rb.MoveRotation(rb.rotation + rotAngle);
     }
 
@@ -88,6 +118,10 @@ public abstract class Seagull : MonoBehaviour
         Transform min_t = transform;
         foreach (GameObject go in targets)
         {
+            if (go == null)
+            {
+                continue;
+            }
             float dist = Vector3.Distance(transform.position, go.transform.position);
             if (dist < min_dist)
             {

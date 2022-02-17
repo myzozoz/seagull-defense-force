@@ -19,7 +19,6 @@ public class IceCream : MonoBehaviour
     {
         if (free)
         {
-            Debug.Log($"Collision detected with {collider.gameObject.name}");
             Seagull sg = collider.gameObject.GetComponent<Seagull>();
             if (sg != null)
             {
