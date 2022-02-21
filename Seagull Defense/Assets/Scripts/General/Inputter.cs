@@ -31,13 +31,19 @@ public class Inputter : GenericSingleton<Inputter>
             cam.orthographicSize = Mathf.Clamp(cam.orthographicSize + zoomSpeed * Input.mouseScrollDelta.y * Time.deltaTime, maxZoomIn, maxZoomOut);
         }
 
-        if (Input.GetMouseButtonDown(0))
+        //Planning phase specific inputs
+        if (State.Instance.Current == GameState.Planning)
         {
-            Debug.Log($"Mouse pos: {cam.ScreenToWorldPoint(Input.mousePosition)}");
-            Vector3Int gridPos = Data.Instance.GridComponent.WorldToCell(cam.ScreenToWorldPoint(Input.mousePosition));
-            map.ConstructPath(new Vector3Int(gridPos.x, gridPos.y, 0));
+            if (Input.GetMouseButtonDown(0))
+            {
+                //Debug.Log($"Mouse pos: {cam.ScreenToWorldPoint(Input.mousePosition)}");
+                Vector3Int gridPos = Data.Instance.GridComponent.WorldToCell(cam.ScreenToWorldPoint(Input.mousePosition));
+                map.ConstructPath(new Vector3Int(gridPos.x, gridPos.y, 0));
+            }
         }
 
+
+        //Map scrolling
         if (Input.GetMouseButtonDown(1))
         {
             prevMouseWorldPoint = cam.ScreenToWorldPoint(Input.mousePosition);

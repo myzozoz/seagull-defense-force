@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(Tilemap))]
@@ -14,6 +15,8 @@ public class MapController : MonoBehaviour
     private Tile fogTile;
     [SerializeField]
     private Tile spawnTile;
+    [SerializeField]
+    private UnityEvent pathConstructedEvent;
 
     private Tilemap tilemap;
 
@@ -32,6 +35,8 @@ public class MapController : MonoBehaviour
             tilemap.SetTile(c, pathTile);
             //Convert nearby fog tiles to grass tiles.
             UpdateVision(c);
+            //Invoke listening events
+            pathConstructedEvent.Invoke();
         }
     }
 
@@ -65,6 +70,11 @@ public class MapController : MonoBehaviour
         }
     }
 
+
+    public void RegisterPathConstructListener(UnityAction action)
+    {
+        pathConstructedEvent.AddListener(action);
+    }
     /*
     public List<Vector3> GetSpawnPositions()
     {

@@ -16,6 +16,7 @@ public class Data : GenericSingleton<Data>
     private MapController map;
     private HashSet<GameObject> iceCreams;
     private HashSet<GameObject> gullSpawns;
+    private short maxTiles = 5;
 
     private bool requireICRefresh = false;
     // Start is called before the first frame update
@@ -78,5 +79,10 @@ public class Data : GenericSingleton<Data>
     public void RefreshIceCreams()
     {
         requireICRefresh = true;
+    }
+
+    public short MaxTiles
+    {
+        get { return maxTiles; }
     }
 }

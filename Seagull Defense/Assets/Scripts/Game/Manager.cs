@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Manager : GenericSingleton<Manager>
 {
+    void Start()
+    {
+        State.Instance.RegisterCombatStartListener(StartCombat);
+    }
 
     void Update()
     {
@@ -11,5 +15,13 @@ public class Manager : GenericSingleton<Manager>
         {
             Debug.Log("Game lost shithead");
         }
+    }
+
+    private void StartCombat()
+    {
+        int wave = State.Instance.Wave;
+        Debug.Log($"Wave {wave} starts!");
+        //Find relevant spawns
+        //Spawn gulls
     }
 }
