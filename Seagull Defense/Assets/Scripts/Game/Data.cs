@@ -10,13 +10,22 @@ public class Data : GenericSingleton<Data>
     [SerializeField]
     private GameObject tilemapObject;
     [SerializeField]
+    private GameObject fogmapObject;
+    [SerializeField]
     private int fov;
+    [SerializeField]
+    private short maxTiles = 5;
+    [SerializeField]
+    private short chunkSize = 10;
+    [Tooltip("Wave numbers (inclusive) after which the amount of seagull spawns per ring increases")]
+    [SerializeField]
+    private List<int> spawnCountIntervals;
 
     private Grid grid;
     private MapController map;
     private HashSet<GameObject> iceCreams;
     private HashSet<GameObject> gullSpawns;
-    private short maxTiles = 5;
+    
 
     private bool requireICRefresh = false;
     // Start is called before the first frame update
@@ -44,6 +53,11 @@ public class Data : GenericSingleton<Data>
     public GameObject TilemapObject
     {
         get { return tilemapObject; }
+    }
+
+    public GameObject FogmapObject
+    {
+        get { return fogmapObject; }
     }
 
     public Grid GridComponent
@@ -84,5 +98,15 @@ public class Data : GenericSingleton<Data>
     public short MaxTiles
     {
         get { return maxTiles; }
+    }
+
+    public short ChunkSize
+    {
+        get { return chunkSize; }
+    }
+
+    public int SpawnsInRing(int x)
+    {
+        return SpawnConfig.GetSeagullSpawnCount(x);
     }
 }

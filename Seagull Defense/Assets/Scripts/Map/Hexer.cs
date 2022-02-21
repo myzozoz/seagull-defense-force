@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 
 //This class makes the assumption that the grid coordinates are from an offset hex coordinate with the axes
@@ -44,7 +45,7 @@ public static class Hexer
     public static List<Vector3Int> GetCoordinatesInRange(Vector3Int g, int rad)
     {
         Vector3Int c = GridToCube(g);
-        List<Vector3Int> gridNeighbours = new List<Vector3Int>();
+        HashSet<Vector3Int> gridNeighbours = new HashSet<Vector3Int>();
         for (int q = c.x-rad; q <= c.x+rad; q++)
         {
             for (int r = c.y-rad; r <= c.y+rad; r++)
@@ -58,6 +59,31 @@ public static class Hexer
                 }
             }
         }
-        return gridNeighbours;
+        return gridNeighbours.ToList();
+    }
+    
+    public static List<Vector3Int> Ring(Vector3Int g, int d)
+    {
+        d = d < 0 ? -d : d;
+        Vector3Int c = GridToCube(g);
+        HashSet<Vector3Int> tiles = new HashSet<Vector3Int>();
+        for (int i = 0; i < d; i++)
+        {
+            tiles.Add(CubeToGrid(new Vector3Int(c.x + d, c.y - i, c.z - d + i)));
+            tiles.Add(CubeToGrid(new Vector3Int(c.x - d, c.y + i, c.z + d - i)));
+
+            tiles.Add(CubeToGrid(new Vector3Int(c.x - i, c.y + d, c.z - d + 1)));
+            tiles.Add(CubeToGrid(new Vector3Int(c.x + i, c.y - d, c.z + d - i)));
+
+            tiles.Add(CubeToGrid(new Vector3Int(c.x - i, c.y - d + i, c.z + d)));
+            tiles.Add(CubeToGrid(new Vector3Int(c.x + i, c.y + d - i, c.z - d)));
+        }
+        return tiles.ToList();
+    }
+
+    public static int RingSize(int r)
+    {
+        r = r < 0 ? -r : r;
+        return r == 0 ? 1 : 6 * r;
     }
 }

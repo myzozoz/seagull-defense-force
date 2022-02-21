@@ -12,18 +12,20 @@ public class MapController : MonoBehaviour
     [SerializeField]
     private Tile grassTile;
     [SerializeField]
-    private Tile fogTile;
+    private Tile dirtTile;
     [SerializeField]
     private Tile spawnTile;
     [SerializeField]
     private UnityEvent pathConstructedEvent;
 
     private Tilemap tilemap;
+    private Tilemap fogmap;
 
     // Start is called before the first frame update
     void Start()
     {
         tilemap = GetComponent<Tilemap>();
+        fogmap = Data.Instance.FogmapObject.GetComponent<Tilemap>();
     }
 
     public void ConstructPath(Vector3Int c)
@@ -63,9 +65,15 @@ public class MapController : MonoBehaviour
         List<Vector3Int> coordinates = Hexer.GetCoordinatesInRange(c, Data.Instance.FOV);
         foreach (Vector3Int a in coordinates)
         {
-            if (tilemap.HasTile(a) && tilemap.GetTile(a).name == fogTile.name)
+            // Check if we need to generate more of the map
+            if (!tilemap.HasTile(a))
             {
-                tilemap.SetTile(a, grassTile);
+                GenerateChunk(a);
+            }
+            
+            if (fogmap.HasTile(a))
+            {
+                fogmap.SetTile(a, null);
             }
         }
     }
@@ -75,6 +83,68 @@ public class MapController : MonoBehaviour
     {
         pathConstructedEvent.AddListener(action);
     }
+
+    public void GenerateChunk(Vector3Int c)
+    {
+        //For each tile in the area
+        //Generate new tile
+        Debug.Log("Generating more map!");
+
+        List<Vector3Int> tiles = Hexer.GetCoordinatesInRange(c, Data.Instance.ChunkSize);
+        //First is known total tiles, second is known spawns
+        Dictionary<int, (int, int)> knownCounts = new Dictionary<int, (int, int)>();
+        tiles.Add(c);
+
+        foreach (Vector3Int t in tiles)
+        {
+            if (!tilemap.HasTile(t))
+            {
+                //Here's where we need to make the magic happen
+
+                //On each ring the chance that a single tile contains a spawn is
+                // p(spawn) = (total_spawns - spawns_placed) / (|ring(d)| - |known_tiles|)
+                int d = Hexer.Distance(Vector3Int.zero, t);
+                if (!knownCounts.ContainsKey(d))
+                {
+                    int known = 0;
+                    int knownSpawns = 0;
+                    foreach (Vector3Int v in Hexer.Ring(Vector3Int.zero, d))
+                    {
+                        if (tilemap.HasTile(v))
+                        {
+                            if (tilemap.GetTile(v).name == spawnTile.name)
+                            {
+                                knownSpawns++;
+                            }
+                            known++;
+                        }
+                    }
+                    knownCounts[d] = (known, knownSpawns);
+                    Debug.Log($"Added key {d} to knownCounts ({known} known, {knownSpawns} known spawns)");
+                }
+                else
+                {
+                    Debug.Log($"Already contains counts for Distance {d}");
+                }
+
+                Debug.Log($"Params| Spawns in ring {Data.Instance.SpawnsInRing(d)} | known spawns: {knownCounts[d].Item2} | Ring size: {Hexer.RingSize(d)} | Known tiles: {knownCounts[d].Item1}");
+                float spawnProb = knownCounts[d].Item1 < Hexer.RingSize(d) ? (float)(Data.Instance.SpawnsInRing(d) - knownCounts[d].Item2) / (float)(Hexer.RingSize(d) - knownCounts[d].Item1) : 0;
+                Debug.Log($"Spawn prob at d={d}: {spawnProb}");
+                if (Random.Range(0f, 1f) < spawnProb)
+                {
+                    tilemap.SetTile(t, spawnTile);
+                    knownCounts[d] = (knownCounts[d].Item1 + 1, knownCounts[d].Item2 + 1);
+                } else
+                {
+                    tilemap.SetTile(t, grassTile);
+                    knownCounts[d] = (knownCounts[d].Item1 + 1, knownCounts[d].Item2);
+                }
+            }
+        }
+
+    }
+
+
     /*
     public List<Vector3> GetSpawnPositions()
     {
