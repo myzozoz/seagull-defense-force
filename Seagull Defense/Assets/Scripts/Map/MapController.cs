@@ -26,6 +26,7 @@ public class MapController : MonoBehaviour
     {
         tilemap = GetComponent<Tilemap>();
         fogmap = Data.Instance.FogmapObject.GetComponent<Tilemap>();
+        State.Instance.RegisterPlanningEndListener(GenerateRing);
     }
 
     public void ConstructPath(Vector3Int c)
@@ -84,11 +85,56 @@ public class MapController : MonoBehaviour
         pathConstructedEvent.AddListener(action);
     }
 
+    public void GenerateRing()
+    {
+        int d = State.Instance.Wave + Data.Instance.FirstSpawnRing;
+        int spawnCount = Data.Instance.SpawnsInRing(d);
+        int ringSize = Hexer.RingSize(d);
+        List<Vector3Int> ring = Hexer.Ring(Vector3Int.zero, d);
+        List<Vector3Int> unplaced = new List<Vector3Int>();
+        int known = 0;
+        int knownSpawns = 0;
+        //Debug.Log("Generating new ring!");
+        foreach (Vector3Int v in ring)
+        {
+            if (tilemap.HasTile(v))
+            {
+                if (tilemap.GetTile(v).name == spawnTile.name)
+                {
+                    knownSpawns++;
+                }
+                known++;
+            }
+            else
+            {
+                unplaced.Add(v);
+            }
+        }
+        
+        foreach (Vector3Int v in unplaced)
+        {
+            //Debug.Log($"Placing {v} | Spawns in ring {spawnCount} | known spawns: {knownSpawns} | Ring size: {ringSize} | Known tiles: {known}");
+            float spawnProb = known < Hexer.RingSize(d) ? (float)(spawnCount - knownSpawns) / (float)(ringSize - known) : 0;
+            //Debug.Log($"Spawn prob at d={d}: {spawnProb}");
+            if (Random.Range(0f, 1f) < spawnProb)
+            {
+                tilemap.SetTile(v, spawnTile);
+                known++;
+                knownSpawns++;
+            }
+            else
+            {
+                tilemap.SetTile(v, grassTile);
+                known++;
+            }
+        }
+    }
+
     public void GenerateChunk(Vector3Int c)
     {
         //For each tile in the area
         //Generate new tile
-        Debug.Log("Generating more map!");
+        //Debug.Log("Generating more map!");
 
         List<Vector3Int> tiles = Hexer.GetCoordinatesInRange(c, Data.Instance.ChunkSize);
         //First is known total tiles, second is known spawns
@@ -120,28 +166,28 @@ public class MapController : MonoBehaviour
                         }
                     }
                     knownCounts[d] = (known, knownSpawns);
-                    Debug.Log($"Added key {d} to knownCounts ({known} known, {knownSpawns} known spawns)");
+                    //Debug.Log($"Added key {d} to knownCounts ({known} known, {knownSpawns} known spawns)");
                 }
                 else
                 {
-                    Debug.Log($"Already contains counts for Distance {d}");
+                    //Debug.Log($"Already contains counts for Distance {d}");
                 }
 
-                Debug.Log($"Params| Spawns in ring {Data.Instance.SpawnsInRing(d)} | known spawns: {knownCounts[d].Item2} | Ring size: {Hexer.RingSize(d)} | Known tiles: {knownCounts[d].Item1}");
+                //Debug.Log($"Params| Spawns in ring {Data.Instance.SpawnsInRing(d)} | known spawns: {knownCounts[d].Item2} | Ring size: {Hexer.RingSize(d)} | Known tiles: {knownCounts[d].Item1}");
                 float spawnProb = knownCounts[d].Item1 < Hexer.RingSize(d) ? (float)(Data.Instance.SpawnsInRing(d) - knownCounts[d].Item2) / (float)(Hexer.RingSize(d) - knownCounts[d].Item1) : 0;
-                Debug.Log($"Spawn prob at d={d}: {spawnProb}");
+                //Debug.Log($"Spawn prob at d={d}: {spawnProb}");
                 if (Random.Range(0f, 1f) < spawnProb)
                 {
                     tilemap.SetTile(t, spawnTile);
                     knownCounts[d] = (knownCounts[d].Item1 + 1, knownCounts[d].Item2 + 1);
-                } else
+                }
+                else
                 {
                     tilemap.SetTile(t, grassTile);
                     knownCounts[d] = (knownCounts[d].Item1 + 1, knownCounts[d].Item2);
                 }
             }
         }
-
     }
 
 

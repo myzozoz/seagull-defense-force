@@ -12,7 +12,14 @@ public enum GameState
 public class State : GenericSingleton<State>
 {
     [SerializeField]
+    private UnityEvent planningStartEvent;
+    [SerializeField]
+    private UnityEvent planningEndEvent;
+    [SerializeField]
     private UnityEvent combatStartEvent;
+    [SerializeField]
+    private UnityEvent combatEndEvent;
+    
 
     private GameState state;
     private MapController map;
@@ -27,10 +34,17 @@ public class State : GenericSingleton<State>
         EnterPlanningPhase();
     }
 
+    //Phase transitions
     private void EnterPlanningPhase()
     {
         state = GameState.Planning;
         tilesRemaining = Data.Instance.MaxTiles;
+        planningStartEvent.Invoke();
+    }
+
+    private void EndPlanningPhase()
+    {
+        planningEndEvent.Invoke();
     }
 
     private void EnterCombatPhase()
@@ -44,8 +58,20 @@ public class State : GenericSingleton<State>
         tilesRemaining--;
         if (tilesRemaining == 0)
         {
+            EndPlanningPhase();
             EnterCombatPhase();
         }
+    }
+
+    //Event listener registrations
+    public void RegisterPlanningStartListener(UnityAction action)
+    {
+        planningStartEvent.AddListener(action);
+    }
+
+    public void RegisterPlanningEndListener(UnityAction action)
+    {
+        planningEndEvent.AddListener(action);
     }
 
     public void RegisterCombatStartListener(UnityAction action)
@@ -53,6 +79,12 @@ public class State : GenericSingleton<State>
         combatStartEvent.AddListener(action);
     }
 
+    public void RegisterCombatEndListener(UnityAction action)
+    {
+        combatEndEvent.AddListener(action);
+    }
+
+    //Public properties
     public int Wave
     {
         get { return wave; }

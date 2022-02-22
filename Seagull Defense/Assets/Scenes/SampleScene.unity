@@ -21996,9 +21996,9 @@ MonoBehaviour:
   tilemapObject: {fileID: 1609358523}
   fogmapObject: {fileID: 1423587595}
   fov: 3
-  maxTiles: 100
+  maxTiles: 5
+  firstSpawnRing: 5
   chunkSize: 8
-  spawnCountIntervals: 
 --- !u!114 &1954630501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22023,7 +22023,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a2fa4a81e2d5c44b54cc61069adbaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  planningStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  planningEndEvent:
+    m_PersistentCalls:
+      m_Calls: []
   combatStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  combatEndEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &8887918867235989057

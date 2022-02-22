@@ -16,10 +16,9 @@ public class Data : GenericSingleton<Data>
     [SerializeField]
     private short maxTiles = 5;
     [SerializeField]
-    private short chunkSize = 10;
-    [Tooltip("Wave numbers (inclusive) after which the amount of seagull spawns per ring increases")]
+    private short firstSpawnRing = 5;
     [SerializeField]
-    private List<int> spawnCountIntervals;
+    private short chunkSize = 10;
 
     private Grid grid;
     private MapController map;
@@ -108,5 +107,10 @@ public class Data : GenericSingleton<Data>
     public int SpawnsInRing(int x)
     {
         return SpawnConfig.GetSeagullSpawnCount(x);
+    }
+
+    public short FirstSpawnRing
+    {
+        get { return firstSpawnRing; }
     }
 }

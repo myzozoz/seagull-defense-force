@@ -72,11 +72,11 @@ public static class Hexer
             tiles.Add(CubeToGrid(new Vector3Int(c.x + d, c.y - i, c.z - d + i)));
             tiles.Add(CubeToGrid(new Vector3Int(c.x - d, c.y + i, c.z + d - i)));
 
-            tiles.Add(CubeToGrid(new Vector3Int(c.x - i, c.y + d, c.z - d + 1)));
-            tiles.Add(CubeToGrid(new Vector3Int(c.x + i, c.y - d, c.z + d - i)));
-
             tiles.Add(CubeToGrid(new Vector3Int(c.x - i, c.y - d + i, c.z + d)));
             tiles.Add(CubeToGrid(new Vector3Int(c.x + i, c.y + d - i, c.z - d)));
+
+            tiles.Add(CubeToGrid(new Vector3Int(c.x - d + i, c.y + d, c.z - i)));
+            tiles.Add(CubeToGrid(new Vector3Int(c.x + d - i, c.y - d, c.z + i)));
         }
         return tiles.ToList();
     }
