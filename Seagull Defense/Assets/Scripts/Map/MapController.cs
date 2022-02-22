@@ -32,7 +32,7 @@ public class MapController : MonoBehaviour
     public void ConstructPath(Vector3Int c)
     {
         //If tile is "path buildable" and there is an adjacent pathtile
-        if (tilemap.GetTile(c).name == grassTile.name && NeighboursContain(c, pathTile))
+        if (tilemap.GetTile(c).name == grassTile.name && NeighborsContain(c, pathTile))
         {
             //Set tile
             tilemap.SetTile(c, pathTile);
@@ -48,7 +48,7 @@ public class MapController : MonoBehaviour
         //Debug.Log($"Grid coordinates: {c} | Cube coordinates: {Hexer.GridToCube(c)} | Distance to origin: {Hexer.Distance(new Vector2Int(0,0), c)} | Tile: {tilemap.GetTile(new Vector3Int(c.x, c.y, 0)).name}");
     }
 
-    private bool NeighboursContain(Vector3Int pos, Tile t)
+    private bool NeighborsContain(Vector3Int pos, Tile t)
     {
         List<Vector3Int> nList = Hexer.GetNeighbors(pos);
         foreach (Vector3Int n in nList)
@@ -76,9 +76,33 @@ public class MapController : MonoBehaviour
             {
                 fogmap.SetTile(a, null);
             }
+
+            if (tilemap.GetTile(a).name == spawnTile.name)
+            {
+                ActivateSpawn(a);
+            }
         }
     }
 
+    private void ActivateSpawn(Vector3Int a)
+    {
+        GullSpawnController spawn = tilemap.GetInstantiatedObject(a).GetComponent<GullSpawnController>();
+        if (spawn != null)
+        {
+            spawn.Activate();
+        }
+    }
+
+    private void ActivateRing(int d)
+    {
+        foreach (Vector3Int v in Hexer.Ring(Vector3Int.zero, d))
+        {
+            if (tilemap.HasTile(v) && tilemap.GetTile(v).name == spawnTile.name)
+            {
+                ActivateSpawn(v);
+            }
+        }
+    }
 
     public void RegisterPathConstructListener(UnityAction action)
     {
@@ -124,10 +148,12 @@ public class MapController : MonoBehaviour
             }
             else
             {
-                tilemap.SetTile(v, grassTile);
+                //tilemap.SetTile(v, grassTile);
                 known++;
             }
         }
+
+        ActivateRing(d);
     }
 
     public void GenerateChunk(Vector3Int c)

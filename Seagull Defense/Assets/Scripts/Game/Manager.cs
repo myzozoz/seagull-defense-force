@@ -23,5 +23,6 @@ public class Manager : GenericSingleton<Manager>
         Debug.Log($"Wave {wave} starts!");
         //Find relevant spawns
         //Spawn gulls
+
     }
 }

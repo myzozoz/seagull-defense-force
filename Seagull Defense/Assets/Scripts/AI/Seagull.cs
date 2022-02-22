@@ -43,7 +43,7 @@ public abstract class Seagull : MonoBehaviour
         turnAmplitude += Random.Range(-turnAmplitudeSpread, turnAmplitudeSpread) * turnAmplitude;
         turnFrequency += Random.Range(-turnFrequencySpread, turnFrequencySpread) * turnFrequency;
         turnOffset = Random.Range(0, 2 * Mathf.PI / turnFrequency);
-        Debug.Log($"Offset values| Amplitude: {turnAmplitude} | Frequency {turnFrequency} | turnOffset");
+        //Debug.Log($"Offset values| Amplitude: {turnAmplitude} | Frequency {turnFrequency} | turnOffset");
     }
 
     void FixedUpdate()
@@ -107,7 +107,9 @@ public abstract class Seagull : MonoBehaviour
         }
         else
         {
-            target = FindClosest(Data.Instance.GullSpawns.ToList());
+            List<GameObject> spawns = Data.Instance.GullSpawns.ToList();
+            Debug.Log($"Got the ice, {spawns.Count} spawns found");
+            target = FindClosest(spawns);
         }
         //Debug.Log($"Target updated, now headed to {target}");
     }
@@ -150,7 +152,7 @@ public abstract class Seagull : MonoBehaviour
     {
         if (hasIce)
         {
-            Debug.Log("Ice stolen get mad");
+            //Debug.Log("Ice stolen get mad");
             Destroy(this.gameObject);
         }
     }
@@ -158,7 +160,7 @@ public abstract class Seagull : MonoBehaviour
     public void TakeDamage(float val)
     {
         health = Mathf.Clamp(health - val, 0f, maxHealth);
-        Debug.Log($"Took {val} damage ({health}/{maxHealth} remaining)");
+        //Debug.Log($"Took {val} damage ({health}/{maxHealth} remaining)");
         if (health <= 0f)
         {
             Die();
@@ -167,7 +169,7 @@ public abstract class Seagull : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log($"Child count at the time of death: {transform.childCount}");
+        //Debug.Log($"Child count at the time of death: {transform.childCount}");
         for (int i = 0; i < transform.childCount; i++)
         {
             Transform child = transform.GetChild(i);

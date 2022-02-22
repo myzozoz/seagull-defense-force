@@ -21,7 +21,6 @@ public class Data : GenericSingleton<Data>
     private short chunkSize = 10;
 
     private Grid grid;
-    private MapController map;
     private HashSet<GameObject> iceCreams;
     private HashSet<GameObject> gullSpawns;
     
@@ -31,7 +30,7 @@ public class Data : GenericSingleton<Data>
     void Start()
     {
         iceCreams = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Ice Cream"));
-        gullSpawns = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Gull Spawn"));
+        State.Instance.RegisterCombatStartListener(UpdateSpawns);
     }
 
     void LateUpdate()
@@ -112,5 +111,11 @@ public class Data : GenericSingleton<Data>
     public short FirstSpawnRing
     {
         get { return firstSpawnRing; }
+    }
+
+
+    private void UpdateSpawns()
+    {
+        gullSpawns = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Gull Spawn"));
     }
 }

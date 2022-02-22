@@ -45,11 +45,13 @@ public class State : GenericSingleton<State>
     private void EndPlanningPhase()
     {
         planningEndEvent.Invoke();
+        Debug.Log("Ended planning phase");
     }
 
     private void EnterCombatPhase()
     {
         state = GameState.Combat;
+        Debug.Log("Entered combat phase!");
         combatStartEvent.Invoke();
     }
 
@@ -76,6 +78,7 @@ public class State : GenericSingleton<State>
 
     public void RegisterCombatStartListener(UnityAction action)
     {
+        Debug.Log($"Registering combat start listener {action}");
         combatStartEvent.AddListener(action);
     }
 
