@@ -12,6 +12,10 @@ public class Data : GenericSingleton<Data>
     [SerializeField]
     private GameObject fogmapObject;
     [SerializeField]
+    private GameObject hintmapObject;
+    [SerializeField]
+    private UIController uiController;
+    [SerializeField]
     private int fov;
     [SerializeField]
     private short maxTiles = 5;
@@ -56,6 +60,16 @@ public class Data : GenericSingleton<Data>
     public GameObject FogmapObject
     {
         get { return fogmapObject; }
+    }
+
+    public GameObject HintmapObject
+    {
+        get { return hintmapObject; }
+    }
+
+    public UIController UI
+    {
+        get { return uiController; }
     }
 
     public Grid GridComponent
@@ -112,7 +126,6 @@ public class Data : GenericSingleton<Data>
     {
         get { return firstSpawnRing; }
     }
-
 
     private void UpdateSpawns()
     {

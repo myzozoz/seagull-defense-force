@@ -10,7 +10,6 @@ public class GullSpawnController : MonoBehaviour
     void Start()
     {
         config = SpawnConfig.Instance.Default;
-        
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -39,15 +38,12 @@ public class GullSpawnController : MonoBehaviour
     public void StartSpawning()
     {
         if (!active) return;
-        Debug.Log("Starting spawning");
         StartCoroutine(SpawnRoutine());
     }
 
     private IEnumerator SpawnRoutine()
     {
         int spawned = 0;
-        Debug.Log("Spawn routine started");
-        Debug.Log($"Spawn config | spawn amount: {config.SpawnAmount}");
         if (config.SpawnAmount == 0)
         {
             config = SpawnConfig.Instance.Default;

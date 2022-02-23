@@ -16,23 +16,31 @@ public class MapController : MonoBehaviour
     [SerializeField]
     private Tile spawnTile;
     [SerializeField]
+    private Tile spawnHintTile;
+    [SerializeField]
+    private Tile turretTile;
+    [SerializeField]
     private UnityEvent pathConstructedEvent;
 
     private Tilemap tilemap;
     private Tilemap fogmap;
+    private Tilemap hintMap;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         tilemap = GetComponent<Tilemap>();
         fogmap = Data.Instance.FogmapObject.GetComponent<Tilemap>();
-        State.Instance.RegisterPlanningEndListener(GenerateRing);
+        hintMap = Data.Instance.HintmapObject.GetComponent<Tilemap>();
+        State.Instance.RegisterBuildEndListener(GenerateRing);
     }
 
     public void ConstructPath(Vector3Int c)
     {
         //If tile is "path buildable" and there is an adjacent pathtile
-        if (tilemap.GetTile(c).name == grassTile.name && NeighborsContain(c, pathTile))
+        if (tilemap.HasTile(c) && tilemap.GetTile(c).name == grassTile.name && NeighborsContain(c, new List<Tile>() { pathTile, turretTile }))
         {
             //Set tile
             tilemap.SetTile(c, pathTile);
@@ -43,17 +51,31 @@ public class MapController : MonoBehaviour
         }
     }
 
+    public void ConstructTurret(Vector3Int c)
+    {
+        if (tilemap.HasTile(c) && tilemap.GetTile(c).name == pathTile.name)
+        {
+            tilemap.SetTile(c, turretTile);
+        }
+    }
+
     public void SelectCell(Vector3Int c)
     {
         //Debug.Log($"Grid coordinates: {c} | Cube coordinates: {Hexer.GridToCube(c)} | Distance to origin: {Hexer.Distance(new Vector2Int(0,0), c)} | Tile: {tilemap.GetTile(new Vector3Int(c.x, c.y, 0)).name}");
     }
 
-    private bool NeighborsContain(Vector3Int pos, Tile t)
+    private bool NeighborsContain(Vector3Int pos, List<Tile> tiles)
     {
         List<Vector3Int> nList = Hexer.GetNeighbors(pos);
+        HashSet<string> tileNames = new HashSet<string>();
+        foreach (Tile t in tiles)
+        {
+            tileNames.Add(t.name);
+        }
+
         foreach (Vector3Int n in nList)
         {
-            if (tilemap.GetTile(n).name == t.name)
+            if (tileNames.Contains(tilemap.GetTile(n).name))
             {
                 return true;
             }
@@ -77,6 +99,11 @@ public class MapController : MonoBehaviour
                 fogmap.SetTile(a, null);
             }
 
+            if (hintMap.HasTile(a))
+            {
+                hintMap.SetTile(a, null);
+            }
+
             if (tilemap.GetTile(a).name == spawnTile.name)
             {
                 ActivateSpawn(a);
@@ -86,6 +113,11 @@ public class MapController : MonoBehaviour
 
     private void ActivateSpawn(Vector3Int a)
     {
+        if (fogmap.HasTile(a))
+        {
+            hintMap.SetTile(a, spawnHintTile);
+        }
+
         GullSpawnController spawn = tilemap.GetInstantiatedObject(a).GetComponent<GullSpawnController>();
         if (spawn != null)
         {
@@ -215,28 +247,4 @@ public class MapController : MonoBehaviour
             }
         }
     }
-
-
-    /*
-    public List<Vector3> GetSpawnPositions()
-    {
-        BoundsInt b = tilemap.cellBounds;
-        List<Vector3> spawnPos = new List<Vector3>();
-        Grid g = Data.Instance.GridComponent;
-
-        for (int x = b.xMin; x <= b.xMax; x++)
-        {
-            for (int y = b.yMin; y <= b.yMax; y++)
-            {
-                Vector3Int temp = new Vector3Int(x, y, 0);
-                if (tilemap.HasTile(temp) && tilemap.GetTile(temp).name == spawnTile.name)
-                {
-                    spawnPos.Add(g.CellToWorld(temp));
-                }
-            }
-        }
-
-        return spawnPos;
-    }
-    */
 }

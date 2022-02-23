@@ -5,16 +5,16 @@ using UnityEngine.Events;
 
 public enum GameState
 {
-    Planning,
+    Build,
     Combat
 };
 
 public class State : GenericSingleton<State>
 {
     [SerializeField]
-    private UnityEvent planningStartEvent;
+    private UnityEvent buildStartEvent;
     [SerializeField]
-    private UnityEvent planningEndEvent;
+    private UnityEvent buildEndEvent;
     [SerializeField]
     private UnityEvent combatStartEvent;
     [SerializeField]
@@ -31,21 +31,21 @@ public class State : GenericSingleton<State>
     {
         map = Data.Instance.Map;
         map.RegisterPathConstructListener(OnPathConstructed);
-        EnterPlanningPhase();
+        EnterBuildPhase();
     }
 
     //Phase transitions
-    private void EnterPlanningPhase()
+    private void EnterBuildPhase()
     {
-        state = GameState.Planning;
+        state = GameState.Build;
         tilesRemaining = Data.Instance.MaxTiles;
-        planningStartEvent.Invoke();
+        buildStartEvent.Invoke();
     }
 
-    private void EndPlanningPhase()
+    private void EndBuildPhase()
     {
-        planningEndEvent.Invoke();
-        Debug.Log("Ended planning phase");
+        buildEndEvent.Invoke();
+        Debug.Log("Ended build phase");
     }
 
     private void EnterCombatPhase()
@@ -55,25 +55,31 @@ public class State : GenericSingleton<State>
         combatStartEvent.Invoke();
     }
 
+    private void EndCombatPhase()
+    {
+        combatEndEvent.Invoke();
+        wave++;
+    }
+
     private void OnPathConstructed()
     {
         tilesRemaining--;
         if (tilesRemaining == 0)
         {
-            EndPlanningPhase();
+            EndBuildPhase();
             EnterCombatPhase();
         }
     }
 
     //Event listener registrations
-    public void RegisterPlanningStartListener(UnityAction action)
+    public void RegisterBuildStartListener(UnityAction action)
     {
-        planningStartEvent.AddListener(action);
+        buildStartEvent.AddListener(action);
     }
 
-    public void RegisterPlanningEndListener(UnityAction action)
+    public void RegisterBuildEndListener(UnityAction action)
     {
-        planningEndEvent.AddListener(action);
+        buildEndEvent.AddListener(action);
     }
 
     public void RegisterCombatStartListener(UnityAction action)
