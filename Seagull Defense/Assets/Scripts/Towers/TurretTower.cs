@@ -60,6 +60,16 @@ public class TurretTower : Tower
     {
         Vector2 pos = new Vector2(transform.position.x, transform.position.y);
         RaycastHit2D[] hits = Physics2D.CircleCastAll(pos, range, new Vector2(), 0f, LayerMask.GetMask("Seagull"), -1f, 1f);
+        foreach (RaycastHit2D hit in hits)
+        {
+            Seagull sg = hit.transform.GetComponent<Seagull>();
+            if (sg != null && sg.HasIce)
+            {
+                target = hit.transform;
+                return;
+            }
+        }
+
         if (hits.Length > 0)
         {
             target = hits[0].transform;

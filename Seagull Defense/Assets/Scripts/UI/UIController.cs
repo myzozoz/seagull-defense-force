@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public enum SelectedButton
 {
@@ -19,6 +20,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject turretBuyButton;
     [SerializeField]
+    private GameObject waveStartButton;
+    [SerializeField]
     private Text pathText;
 
     private SelectedButton selected;
@@ -34,6 +37,11 @@ public class UIController : MonoBehaviour
     void OnGUI()
     {
         pathText.text = $"{State.Instance.TilesRemaining}";
+    }
+
+    public void RegisterWaveButtonListener(UnityAction action)
+    {
+        waveStartButton.GetComponent<Button>().onClick.AddListener(action);
     }
 
     private void ToggleButton(SelectedButton sel)

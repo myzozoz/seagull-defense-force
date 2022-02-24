@@ -33,6 +33,7 @@ public class State : GenericSingleton<State>
         map.RegisterPathConstructListener(OnPathConstructed);
         Manager.Instance.RegisterWaveEndListener(EndCombatPhase);
         EnterBuildPhase();
+        Data.Instance.UI.RegisterWaveButtonListener(EndBuildPhase);
     }
 
     //Phase transitions
@@ -47,6 +48,7 @@ public class State : GenericSingleton<State>
     {
         buildEndEvent.Invoke();
         Debug.Log("Ended build phase");
+        EnterCombatPhase();
     }
 
     private void EnterCombatPhase()
@@ -61,17 +63,12 @@ public class State : GenericSingleton<State>
         combatEndEvent.Invoke();
         buildStartEvent.Invoke();
         wave++;
-        tilesRemaining = 5;
+        EnterBuildPhase();
     }
 
     private void OnPathConstructed()
     {
         tilesRemaining--;
-        if (tilesRemaining == 0)
-        {
-            EndBuildPhase();
-            EnterCombatPhase();
-        }
     }
 
     //Event listener registrations

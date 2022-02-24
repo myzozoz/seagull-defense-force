@@ -181,4 +181,9 @@ public abstract class Seagull : MonoBehaviour
         }
         Destroy(this.gameObject);
     }
+
+    public bool HasIce
+    {
+        get { return hasIce; }
+    }
 }
