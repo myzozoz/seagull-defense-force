@@ -43,7 +43,7 @@ public class Data : GenericSingleton<Data>
         {
             iceCreams = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Ice Cream"));
             requireICRefresh = false;
-            Debug.Log("Ice creams updated");
+            //Debug.Log("Ice creams updated");
         }
     }
 
