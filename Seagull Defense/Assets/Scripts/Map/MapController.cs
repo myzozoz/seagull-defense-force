@@ -20,6 +20,8 @@ public class MapController : MonoBehaviour
     [SerializeField]
     private Tile turretTile;
     [SerializeField]
+    private TowerSO turretSO;
+    [SerializeField]
     private UnityEvent pathConstructedEvent;
 
     private Tilemap tilemap;
@@ -53,7 +55,7 @@ public class MapController : MonoBehaviour
 
     public void ConstructTurret(Vector3Int c)
     {
-        if (tilemap.HasTile(c) && tilemap.GetTile(c).name == pathTile.name)
+        if (tilemap.HasTile(c) && tilemap.GetTile(c).name == pathTile.name && Data.Instance.Bank.ChangeBalance(-turretSO.cost))
         {
             tilemap.SetTile(c, turretTile);
         }

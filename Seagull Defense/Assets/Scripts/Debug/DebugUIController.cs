@@ -27,6 +27,7 @@ public class DebugUIController : MonoBehaviour
     {
         return $"Phase: {State.Instance.Current.ToString()}\n" +
             $"Wave: {State.Instance.Wave}\n" +
-            $"Tiles: {State.Instance.TilesRemaining}/{Data.Instance.MaxTiles}";
+            $"Tiles: {State.Instance.TilesRemaining}/{Data.Instance.MaxTiles}\n" +
+            $"Money: ${Data.Instance.Bank.Balance}";
     }
 }

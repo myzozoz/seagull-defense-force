@@ -53,6 +53,8 @@ public class TurretTower : Tower
         lookPos.z = top.transform.position.z;
         top.transform.LookAt(lookPos);
 
+        Debug.DrawLine(transform.position, lookPos, Color.red);
+
         Shoot();
     }
 
@@ -60,22 +62,31 @@ public class TurretTower : Tower
     {
         Vector2 pos = new Vector2(transform.position.x, transform.position.y);
         RaycastHit2D[] hits = Physics2D.CircleCastAll(pos, range, new Vector2(), 0f, LayerMask.GetMask("Seagull"), -1f, 1f);
-        foreach (RaycastHit2D hit in hits)
-        {
-            Seagull sg = hit.transform.GetComponent<Seagull>();
-            if (sg != null && sg.HasIce)
-            {
-                target = hit.transform;
-                return;
-            }
-        }
-
-        if (hits.Length > 0)
-        {
-            target = hits[0].transform;
-        } else
+        if (hits.Length <= 0)
         {
             target = null;
+        }
+        else
+        {
+            float minDist = range;
+            foreach (RaycastHit2D hit in hits)
+            {
+                Seagull sg = hit.transform.GetComponent<Seagull>();
+                if (sg != null)
+                {
+                    if (sg.HasIce)
+                    {
+                        target = hit.transform;
+                        return;
+                    }
+
+                    if ((transform.position - hit.transform.position).magnitude < minDist)
+                    {
+                        minDist = (transform.position - hit.transform.position).magnitude;
+                        target = hit.transform;
+                    }
+                }
+            }
         }
     }
 

@@ -23,6 +23,8 @@ public class Data : GenericSingleton<Data>
     private short firstSpawnRing = 5;
     [SerializeField]
     private short chunkSize = 10;
+    [SerializeField]
+    private BankSO bank;
 
     private Grid grid;
     private HashSet<GameObject> iceCreams;
@@ -116,6 +118,11 @@ public class Data : GenericSingleton<Data>
     public short ChunkSize
     {
         get { return chunkSize; }
+    }
+
+    public BankSO Bank
+    {
+        get { return bank; }
     }
 
 

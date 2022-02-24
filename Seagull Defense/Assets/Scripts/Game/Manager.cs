@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public enum Interaction
 {
@@ -29,7 +30,7 @@ public class Manager : GenericSingleton<Manager>
     {
         if (Data.Instance.ICCount <= 0)
         {
-            Debug.Log("Game lost shithead");
+            SceneManager.LoadScene("SampleScene");
         }
     }
 

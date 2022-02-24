@@ -164,6 +164,7 @@ public abstract class Seagull : MonoBehaviour
         //Debug.Log($"Took {val} damage ({health}/{maxHealth} remaining)");
         if (health <= 0f)
         {
+            Data.Instance.Bank.ChangeBalance(20);
             Die();
         }
     }

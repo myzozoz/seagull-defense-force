@@ -28,6 +28,11 @@ public class Inputter : GenericSingleton<Inputter>
     // Update is called once per frame
     void Update()
     {
+        if (cam == null)
+        {
+            cam = Camera.main;
+        }
+
         //Camera zoom
         if (Input.mouseScrollDelta.y != 0)
         {

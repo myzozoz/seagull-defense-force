@@ -510,7 +510,9 @@ MonoBehaviour:
 
     Wave:
 
-    Tiles remaining:'
+    Tiles remaining:
+
+    Money:'
 --- !u!222 &214922770
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -531,6 +533,7 @@ GameObject:
   - component: {fileID: 268309276}
   - component: {fileID: 268309275}
   - component: {fileID: 268309274}
+  - component: {fileID: 268309277}
   m_Layer: 5
   m_Name: TurretBuyButton
   m_TagString: Untagged
@@ -583,7 +586,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.81960785, g: 0.81960785, b: 0.81960785, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 0.2783019, b: 0.2783019, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.01
   m_SpriteState:
@@ -640,6 +643,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268309272}
   m_CullTransparentMesh: 1
+--- !u!114 &268309277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268309272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca4e88d37bc9b8f478cc09b483412054, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  towerSO: {fileID: 11400000, guid: aeaf9e2ba98fc144cac65cf9aa387652, type: 2}
+  priceText: {fileID: 862133267}
+  button: {fileID: 0}
 --- !u!1 &437237546
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &668236731
 Transform:
   m_ObjectHideFlags: 0
@@ -1060,7 +1078,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: $100
+  m_Text: $
 --- !u!222 &862133268
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -22685,6 +22703,7 @@ MonoBehaviour:
   spawnTile: {fileID: 11400000, guid: 0c81392b9c33da94a882ab37339d696e, type: 2}
   spawnHintTile: {fileID: 11400000, guid: cb01c75bc603a8241a54819cbb0fd7bd, type: 2}
   turretTile: {fileID: 11400000, guid: fd25597f5a7a0534abdb622604e5b2a3, type: 2}
+  turretSO: {fileID: 11400000, guid: aeaf9e2ba98fc144cac65cf9aa387652, type: 2}
   pathConstructedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -22752,7 +22771,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.81960785, g: 0.81960785, b: 0.81960785, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 1, g: 1, b: 1, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 0.2784314, b: 0.2784314, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.01
   m_SpriteState:
@@ -22892,6 +22911,7 @@ MonoBehaviour:
   maxTiles: 5
   firstSpawnRing: 5
   chunkSize: 8
+  bank: {fileID: 11400000, guid: a397308f977b7d04fa8de71778010cd9, type: 2}
 --- !u!114 &1954630501
 MonoBehaviour:
   m_ObjectHideFlags: 0
