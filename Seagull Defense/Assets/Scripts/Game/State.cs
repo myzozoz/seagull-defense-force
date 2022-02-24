@@ -31,6 +31,7 @@ public class State : GenericSingleton<State>
     {
         map = Data.Instance.Map;
         map.RegisterPathConstructListener(OnPathConstructed);
+        Manager.Instance.RegisterWaveEndListener(EndCombatPhase);
         EnterBuildPhase();
     }
 
@@ -58,7 +59,9 @@ public class State : GenericSingleton<State>
     private void EndCombatPhase()
     {
         combatEndEvent.Invoke();
+        buildStartEvent.Invoke();
         wave++;
+        tilesRemaining = 5;
     }
 
     private void OnPathConstructed()

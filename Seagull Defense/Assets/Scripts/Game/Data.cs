@@ -47,6 +47,7 @@ public class Data : GenericSingleton<Data>
         }
     }
 
+    //public properties
     public GameObject GridObject
     {
         get { return gridObject; }
@@ -117,6 +118,8 @@ public class Data : GenericSingleton<Data>
         get { return chunkSize; }
     }
 
+
+    //Public methods
     public int SpawnsInRing(int x)
     {
         return SpawnConfig.GetSeagullSpawnCount(x);
@@ -131,4 +134,5 @@ public class Data : GenericSingleton<Data>
     {
         gullSpawns = new HashSet<GameObject>(GameObject.FindGameObjectsWithTag("Gull Spawn"));
     }
+
 }

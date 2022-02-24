@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GullSpawnController : MonoBehaviour
 {
     private SpawnConfigData config;
     private bool active = false;
 
+    private UnityEvent endSpawnEvent;
+
     void Start()
     {
         config = SpawnConfig.Instance.Default;
+        if (endSpawnEvent == null)
+            endSpawnEvent = new UnityEvent();
     }
 
     void OnTriggerEnter2D(Collider2D collider)
@@ -55,6 +60,23 @@ public class GullSpawnController : MonoBehaviour
             //Debug.Log("Seagull spawned! Prepare to die!");
             yield return new WaitForSeconds(config.SpawnInterval);
             spawned++;
+        }
+
+        endSpawnEvent.Invoke();
+    }
+
+    public bool Active
+    {
+        get { return active; }
+    }
+
+    public UnityEvent OnEndSpawn
+    {
+        get
+        {
+            if (endSpawnEvent == null)
+                endSpawnEvent = new UnityEvent();
+            return endSpawnEvent;
         }
     }
 }
