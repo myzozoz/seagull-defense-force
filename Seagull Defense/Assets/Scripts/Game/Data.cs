@@ -25,6 +25,8 @@ public class Data : GenericSingleton<Data>
     private short chunkSize = 10;
     [SerializeField]
     private BankSO bank;
+    [SerializeField]
+    private BankSO tileBank;
 
     private Grid grid;
     private HashSet<GameObject> iceCreams;
@@ -123,6 +125,11 @@ public class Data : GenericSingleton<Data>
     public BankSO Bank
     {
         get { return bank; }
+    }
+
+    public BankSO TileBank
+    {
+        get { return tileBank; }
     }
 
 

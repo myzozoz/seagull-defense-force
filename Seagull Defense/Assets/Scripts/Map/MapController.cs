@@ -42,7 +42,10 @@ public class MapController : MonoBehaviour
     public void ConstructPath(Vector3Int c)
     {
         //If tile is "path buildable" and there is an adjacent pathtile
-        if (tilemap.HasTile(c) && tilemap.GetTile(c).name == grassTile.name && NeighborsContain(c, new List<Tile>() { pathTile, turretTile }))
+        if (tilemap.HasTile(c)
+            && (tilemap.GetTile(c).name == grassTile.name || (State.Instance.Current == GameState.Build && tilemap.GetTile(c).name == spawnTile.name))
+            && NeighborsContain(c, new List<Tile>() { pathTile, turretTile })
+            && Data.Instance.TileBank.ChangeBalance(-1))
         {
             //Set tile
             tilemap.SetTile(c, pathTile);

@@ -36,7 +36,7 @@ public class UIController : MonoBehaviour
 
     void OnGUI()
     {
-        pathText.text = $"{State.Instance.TilesRemaining}";
+        pathText.text = $"{Data.Instance.TileBank.Balance}";
     }
 
     public void RegisterWaveButtonListener(UnityAction action)

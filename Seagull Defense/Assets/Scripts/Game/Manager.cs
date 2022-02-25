@@ -24,6 +24,7 @@ public class Manager : GenericSingleton<Manager>
         State.Instance.RegisterCombatStartListener(StartCombat);
         map = Data.Instance.Map;
         waveEndEvent = new UnityEvent();
+        waveEndEvent.AddListener(() => Data.Instance.Bank.ChangeBalance(60));
     }
 
     void Update()
@@ -83,7 +84,7 @@ public class Manager : GenericSingleton<Manager>
             switch (Data.Instance.UI.Selected)
             {
                 case SelectedButton.Path:
-                    if (State.Instance.TilesRemaining > 0)
+                    if (Data.Instance.TileBank.Balance > 0)
                         map.ConstructPath(pos);
                     break;
                 case SelectedButton.Turret:

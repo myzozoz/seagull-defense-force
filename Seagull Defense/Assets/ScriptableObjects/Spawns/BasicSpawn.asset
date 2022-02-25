@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a358bf8af67438498ca7f6b27ee2ea3, type: 3}
-  m_Name: Turret
+  m_Script: {fileID: 11500000, guid: bee7f5d40278a8848ac76dca185bd17a, type: 3}
+  m_Name: BasicSpawn
   m_EditorClassIdentifier: 
-  name: Turret
-  towerTile: {fileID: 11400000, guid: fd25597f5a7a0534abdb622604e5b2a3, type: 2}
-  cost: 100
-  shotDelay: 0.9
-  range: 4
+  level: 1
+  spawnInterval: 1
+  spawnAmount: 5
+  spawnable: {fileID: 5785446154730991446, guid: 6557e9488ef892046bc9e00f89243810, type: 3}

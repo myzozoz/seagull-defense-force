@@ -9,4 +9,6 @@ public class TowerSO : ScriptableObject
     public new string name;
     public Tile towerTile;
     public int cost;
+    public float shotDelay;
+    public float range;
 }

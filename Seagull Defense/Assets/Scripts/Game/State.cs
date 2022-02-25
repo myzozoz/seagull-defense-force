@@ -23,14 +23,12 @@ public class State : GenericSingleton<State>
 
     private GameState state;
     private MapController map;
-    private short tilesRemaining = 0;
     private int wave = 1;
 
     // Start is called before the first frame update
     void Start()
     {
         map = Data.Instance.Map;
-        map.RegisterPathConstructListener(OnPathConstructed);
         Manager.Instance.RegisterWaveEndListener(EndCombatPhase);
         EnterBuildPhase();
         Data.Instance.UI.RegisterWaveButtonListener(EndBuildPhase);
@@ -40,7 +38,7 @@ public class State : GenericSingleton<State>
     private void EnterBuildPhase()
     {
         state = GameState.Build;
-        tilesRemaining = Data.Instance.MaxTiles;
+        Data.Instance.TileBank.ChangeBalance(1);
         buildStartEvent.Invoke();
     }
 
@@ -64,11 +62,6 @@ public class State : GenericSingleton<State>
         buildStartEvent.Invoke();
         wave++;
         EnterBuildPhase();
-    }
-
-    private void OnPathConstructed()
-    {
-        tilesRemaining--;
     }
 
     //Event listener registrations
@@ -102,10 +95,5 @@ public class State : GenericSingleton<State>
     public GameState Current
     {
         get { return state; }
-    }
-
-    public short TilesRemaining
-    {
-        get { return tilesRemaining; }
     }
 }

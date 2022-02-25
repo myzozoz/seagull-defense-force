@@ -5,14 +5,14 @@ using UnityEngine.Events;
 
 public class GullSpawnController : MonoBehaviour
 {
-    private SpawnConfigData config;
+    [SerializeField]
+    private SpawnSO config;
     private bool active = false;
 
     private UnityEvent endSpawnEvent;
 
     void Start()
     {
-        config = SpawnConfig.Instance.Default;
         if (endSpawnEvent == null)
             endSpawnEvent = new UnityEvent();
     }
@@ -49,10 +49,6 @@ public class GullSpawnController : MonoBehaviour
     private IEnumerator SpawnRoutine()
     {
         int spawned = 0;
-        if (config.SpawnAmount == 0)
-        {
-            config = SpawnConfig.Instance.Default;
-        }
 
         while (spawned < config.SpawnAmount)
         {

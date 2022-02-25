@@ -22912,6 +22912,7 @@ MonoBehaviour:
   firstSpawnRing: 5
   chunkSize: 8
   bank: {fileID: 11400000, guid: a397308f977b7d04fa8de71778010cd9, type: 2}
+  tileBank: {fileID: 11400000, guid: e46fe3867241df14095fe5b2d5fdc00e, type: 2}
 --- !u!114 &1954630501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22960,8 +22961,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ea9b21e82c76cf408a37f09def8eb70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultSpawnConfig:
-    Level: 1
-    SpawnInterval: 1
-    SpawnAmount: 7
-    Spawnable: {fileID: 5785446154730991446, guid: 6557e9488ef892046bc9e00f89243810, type: 3}
