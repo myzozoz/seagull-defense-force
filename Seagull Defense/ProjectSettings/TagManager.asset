@@ -7,6 +7,9 @@ TagManager:
   - Ice Cream
   - Seagull
   - Gull Spawn
+  - Main Map
+  - Fog Map
+  - Hint Map
   layers:
   - Default
   - TransparentFX

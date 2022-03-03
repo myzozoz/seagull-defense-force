@@ -10,6 +10,7 @@ public class GullSpawnController : MonoBehaviour
     private bool active = false;
 
     private UnityEvent endSpawnEvent;
+    private int level;
 
     void Start()
     {
@@ -43,18 +44,18 @@ public class GullSpawnController : MonoBehaviour
     public void StartSpawning()
     {
         if (!active) return;
+        level++;
         StartCoroutine(SpawnRoutine());
     }
 
     private IEnumerator SpawnRoutine()
     {
         int spawned = 0;
-
-        while (spawned < config.SpawnAmount)
+        while (spawned < config.GetSpawnAmount(level))
         {
             GameObject.Instantiate(config.Spawnable, transform.position, Quaternion.identity);
             //Debug.Log("Seagull spawned! Prepare to die!");
-            yield return new WaitForSeconds(config.SpawnInterval);
+            yield return new WaitForSeconds(config.GetSpawnInterval(level));
             spawned++;
         }
 

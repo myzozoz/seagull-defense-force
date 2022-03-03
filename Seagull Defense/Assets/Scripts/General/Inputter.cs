@@ -13,7 +13,6 @@ public class Inputter : GenericSingleton<Inputter>
     private float maxZoomOut = 100f;
     
     private Camera cam;
-    private MapController map;
     private Vector3 prevMouseWorldPoint;
     private Manager manager;
 
@@ -21,7 +20,6 @@ public class Inputter : GenericSingleton<Inputter>
     void Start()
     {
         cam = Camera.main;
-        map = Data.Instance.Map;
         manager = Manager.Instance;
     }
 

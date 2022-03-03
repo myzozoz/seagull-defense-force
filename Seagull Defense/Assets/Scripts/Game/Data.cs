@@ -84,7 +84,7 @@ public class Data : GenericSingleton<Data>
 
     public MapController Map
     {
-        get { return tilemapObject.GetComponent<MapController>(); ; }
+        get { return tilemapObject.GetComponent<MapController>(); }
     }
 
     public int FOV

@@ -39,4 +39,20 @@ public class BankSO : ScriptableObject
         balanceChangeEvent.Invoke(balance);
         return true;
     }
+
+    public bool SetBalance(int val)
+    {
+        if (val < 0)
+            return false;
+
+        balance = val;
+        balanceChangeEvent.Invoke(balance);
+        return true;
+    }
+
+    public void ResetBalance()
+    {
+        balance = startingBalance;
+        balanceChangeEvent.Invoke(balance);
+    }
 }

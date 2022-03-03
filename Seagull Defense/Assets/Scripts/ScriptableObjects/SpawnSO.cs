@@ -5,28 +5,26 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Spawn", menuName = "ScriptableObjects/Spawn")]
 public class SpawnSO : ScriptableObject
 {
-    public int level;
-    public float spawnInterval;
-    public int spawnAmount;
-    public GameObject spawnable;
+    [SerializeField]
+    public float baseSpawnInterval;
+    [SerializeField]
+    private int baseSpawnAmount;
+    [SerializeField]
+    private int spawnIncreaseAmount;
+    [SerializeField]
+    private float spawnIntervalLevelMultiplier;
+    [SerializeField]
+    public int spawnIncreaseInterval;
 
-    public int Level
+    public GameObject Spawnable;
+
+    public int GetSpawnAmount(int level)
     {
-        get { return level; }
+        return baseSpawnAmount + (int)(level / spawnIncreaseInterval) * spawnIncreaseAmount;
     }
 
-    public float SpawnInterval
+    public float GetSpawnInterval(int level)
     {
-        get { return spawnInterval; }
-    }
-
-    public float SpawnAmount
-    {
-        get { return spawnAmount; }
-    }
-
-    public GameObject Spawnable
-    {
-        get { return spawnable; }
+        return baseSpawnInterval * Mathf.Pow(spawnIntervalLevelMultiplier, Mathf.Floor(level / spawnIncreaseInterval));
     }
 }

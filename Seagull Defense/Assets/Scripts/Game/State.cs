@@ -38,7 +38,7 @@ public class State : GenericSingleton<State>
     private void EnterBuildPhase()
     {
         state = GameState.Build;
-        Data.Instance.TileBank.ChangeBalance(1);
+        Data.Instance.TileBank.ChangeBalance(2);
         buildStartEvent.Invoke();
     }
 

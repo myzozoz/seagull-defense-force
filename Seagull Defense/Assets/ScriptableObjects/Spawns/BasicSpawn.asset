@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee7f5d40278a8848ac76dca185bd17a, type: 3}
   m_Name: BasicSpawn
   m_EditorClassIdentifier: 
-  level: 1
-  spawnInterval: 1
-  spawnAmount: 5
-  spawnable: {fileID: 5785446154730991446, guid: 6557e9488ef892046bc9e00f89243810, type: 3}
+  baseSpawnInterval: 1
+  baseSpawnAmount: 4
+  spawnIncreaseAmount: 2
+  spawnIntervalLevelMultiplier: 0.9
+  spawnIncreaseInterval: 2
+  Spawnable: {fileID: 5785446154730991446, guid: 6557e9488ef892046bc9e00f89243810, type: 3}

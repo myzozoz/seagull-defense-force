@@ -32,6 +32,8 @@ public class Manager : GenericSingleton<Manager>
         if (Data.Instance.ICCount <= 0)
         {
             SceneManager.LoadScene("SampleScene");
+            Data.Instance.Bank.ResetBalance();
+            Data.Instance.TileBank.ResetBalance();
         }
     }
 

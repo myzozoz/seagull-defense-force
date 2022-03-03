@@ -39,6 +39,11 @@ public class MapController : MonoBehaviour
         State.Instance.RegisterBuildEndListener(GenerateRing);
     }
 
+    void Update()
+    {
+        //Debug.Log($"This is my tilemap: {tilemap}");
+    }
+
     public void ConstructPath(Vector3Int c)
     {
         //If tile is "path buildable" and there is an adjacent pathtile
